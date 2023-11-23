@@ -1,0 +1,141 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+
+class Wordle
+{
+    public:
+
+        char answer[4];
+
+        vector<vector<vector<string>>> makeBoard()
+        {
+            // the element to be modified is element 5 so modifying would be tile[2][2]= letter
+            vector<vector<string>> tile{{"---"}, {"| |"}, {"---"}};
+            //modifying it in the board would be board[tilenumber][2][2] = letter
+            vector<vector<vector<string>>> board;
+
+            for(int i = 0; i <= 30; i++)
+            {
+
+                board.push_back(tile);
+
+
+            }
+            return board;
+        }
+
+
+
+        
+
+
+    private:
+
+        char solution[4];
+        vector<vector<int>> greenList;
+        vector<vector<int>> yellowList;
+        vector<int> greyList;
+
+        void setSolution()
+        {
+            //set random solution
+            string randomWord = "rand";
+
+            strcpy(solution, randomWord);
+        }
+
+        bool checkSolution()
+        {
+
+            bool greenYellowCheck = false;
+
+            int counter = 0;
+            int green = 0;
+            int yellow = 0;
+            int grey = 0;
+
+            for(int i = 0; i < 5; i++)
+            {
+
+                
+                greenYellowCheck = false;
+
+                for(int n = 0; n < 5; n++)
+                {
+
+                    if(solution[i] == answer[i]) // can optimize by putting this outside the inner for loop and doing n++ if its found
+                    {
+                        green++;
+                        greenList.push_back({answer[i], i});
+                        greenYellowCheck = true;
+                        break;
+                    }
+                    else if((solution[i] == answer[n]) && (i != n)) //the edge case i!=n can be removed I just wanted to be safe
+                    {
+                        yellow++;
+                        greenList.push_back({answer[n], n});
+                        greenYellowCheck = true;
+                        break;
+                    }
+
+                }
+
+                if(greenYellowCheck == false)
+                {
+                    greyList.push_back(answer[i]);
+                    grey++;
+                    
+                }
+
+            }
+
+            return true;
+        }
+
+
+
+
+
+
+};
+
+
+
+class MainMenu
+{
+    public:
+        
+
+
+    private:
+
+
+
+
+};
+
+int main(int argc, char* argv[]) 
+{
+
+    Wordle game;
+
+    vector<vector<vector<string>>> board = game.makeBoard();
+    cout << "made board" << endl;
+
+    for (const auto& outerVector : board) {
+        for (const auto& middleVector : outerVector) {
+            for (const auto& innerVector : middleVector) {
+                for (const auto& str : innerVector) {
+                    std::cout << str << " ";
+                }
+            }
+        }
+    }
+
+    return 0;
+}
